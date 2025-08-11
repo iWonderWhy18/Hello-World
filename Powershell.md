@@ -1,4 +1,158 @@
 
 ## Types of variables
 
+```powershell
+
 Get-Process | Where-Object {$_.Responding -eq $false}
+```
+
+```powershell
+Get-Variable
+```
+
+```powershell
+PS C:\Users\user1> $env:COMPUTERNAME
+IML-EXAMPLE
+```
+
+```powershell
+Get-Location – Get the current directory
+Set-Location – Get the current directory
+Move-item – Move a file to a new location
+Copy-item – Copy a file to a new location
+Rename – item Rename an existing file
+New-item – Create a new file
+```
+
+Help Command
+```powershell
+PS C:\> Get-Command
+```
+
+Execution Policy
+```powershell
+PS C:\>   Set-ExecutionPolicy
+```
+Change to remote  signed
+```powershell
+PS C:\> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned
+```
+
+Running a script
+```powershell
+PS C:\powershell\mynewscript.ps1
+```
+
+Common Commands
+```powershell
+`cd`: Change Directory. This command is used to change the current working directory. In PowerShell, `Set-Location` can be used as well.
+
+`cls`: Clear Screen. This command clears the screen of the console. In PowerShell, `Clear-Host` or its alias `cls` can be used.
+
+`dir`: Directory. This command lists the files and subdirectories in the directory. In PowerShell, `Get-ChildItem` can be used as well.
+
+`echo`: This command prints text to the console. In PowerShell, `Write-Output` can be used as well.
+
+`copy`: This command copies files. In PowerShell, `Copy-Item` can be used as well.
+
+`del`: Delete. This command deletes one or more files. In PowerShell, `Remove-Item` can be used as well.
+
+`move`: This command moves files from one location to another. In PowerShell, `Move-Item` can be used as well.
+
+`type`: This command displays the contents of a text file. In PowerShell, `Get-Content` can be used as well.
+
+`find`: This command searches for a text string in a file. In PowerShell, `Select-String` can be used as well.
+
+`exit`: This command closes the command prompt or terminal window. It works the same in both Command Prompt and PowerShell.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

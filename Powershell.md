@@ -256,9 +256,9 @@ Get-ChildItem -Path "C:\" -Recurse -ErrorAction SilentlyContinue -File | Where-O
 
 
 ```powershell
-Enter-PSSession -CompyterName REMOTEPC (Get-Credential)
+Enter-PSSession -ComputerName REMOTEPC (Get-Credential)
 
-Invoke-Command -COmputerName REMOTEPC {Get-Process}
+Invoke-Command -ComputerName REMOTEPC {Get-Process}
 
 Get-WMIObject -Class Win32_Process -ComputerName REMOTEPC
 

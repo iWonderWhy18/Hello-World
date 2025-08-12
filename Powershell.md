@@ -332,9 +332,22 @@ Function Invoke-Pingsweep{
 		[int]$end = 10,
 		[string]$OutputPath = "C:\Temp\pingsweep_result.txt"
 	)
+
+	$range = $Start..$End         #1,2,3,4,5,6,7,8,9,10
+	Foreach ($host in $range){    #will iterate through range
+		$ip = "$subnet$host"      #192.168.1.$host
+		$status = if (test-connection -ComputerName $ip -count 1 -Quiet){
+			"$ip is online"       #nice for troubleshooting
+		}else{
+			"$ip is unreachable"
+		}
+		Add-Content -Path $OutputPath -Value $status #adding it to the file
+	}
+	Write-Output "Pingsweep done, results saved to $outputPath"
 }
 ```
 
+Part 2 - Main script
 ```powershell
 $range = $Start..$End         #1,2,3,4,5,6,7,8,9,10
 Foreach ($host in $range){    #will iterate through range

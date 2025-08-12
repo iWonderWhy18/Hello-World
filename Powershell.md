@@ -2,7 +2,6 @@
 ## Types of variables
 
 ```powershell
-
 Get-Process | Where-Object {$_.Responding -eq $false}
 ```
 
@@ -69,13 +68,39 @@ Common Commands
 
 
 
+Hostname AND Versions of Windows
+```powershell
+Get-ComputerInfo
+```
+
+```powershell
+Get-ComputerInfo | select csname, windowsversion
+```
+
+![[Pasted image 20250812095438.png]]
 
 
+List all user accounts on the machine
+```powershell
+Get-localuser
+```
+```powershell
+Get-aduser
+```
+Check who is currently logged on
+Check which users are in the administrator group
 
 
+List all the currently running processes
+```powershell
+Get-Process
+Get-Process -Name "Notepad"
+Get-Process -Id 1234
+Get-Process | Sort-Object CPU -Descending
+```
+Check process meta data including paths and arguments
 
-
-
+EXTRA: get all services which are running and start automatically
 
 
 

@@ -165,7 +165,11 @@ HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
 List Scheduled tasks
 
 
-
+Desktop file called "bad.txt"
+Command to location the file "bad.txt"
+```powershell
+Get-ChildItem -Path C:\Users\fcu1\ -Recurse | Where-Object Name -eq "bad.txt"
+```
 
 
 

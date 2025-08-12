@@ -131,7 +131,28 @@ Netstat -a
 
 
 
+# PowerShell Day 1 
 
+
+### Persistence
+
+Check registry startup locations
+```powershell
+Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\Currentversion\Run
+```
+
+HELP MENU FOR GET COMMANDS
+```powershell
+get -command
+```
+
+List Scheduled Tasks
+```powershell
+Get-ScheduledTask
+```
+
+
+Reg query 
 
 
 

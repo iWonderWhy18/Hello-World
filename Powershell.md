@@ -4,6 +4,10 @@
 ```powershell
 Get-Process | Where-Object {$_.Responding -eq $false}
 ```
+Processes with paths location
+```powershell
+Get-Process | Select-Object -Property ProcessName, Id, Path
+```
 
 ```powershell
 Get-Variable
@@ -217,4 +221,23 @@ Get-NetTCPConnection -RemoteAddress "192.168.1.50"
 Find connections on a specific local port
 ```powershell
 Get-NetTCPConnection -LocalPort 80
+```
+
+Show only Name, Enabled, and LastLogon
+```powershell
+Get-LocalUser | Select-Object Name, Enabled, LastLogon
+```
+
+Find all enabled local users
+```powershell
+Get-LocalUser | Where-Object { $_.Enabled -eq $true }
+```
+
+last write time 
+```powershell
+Get-ChildItem -Path "C:\YourDirectory" -File | Where-Object {$_.LastWriteTime -gt (Get-Date).AddDays(-7)}
+```
+
+```powershell
+Get-ChildItem -Path "C:\" -Recurse -ErrorAction SilentlyContinue -File | Where-Object {$_.LastWriteTime -gt (Get-Date).AddDays(-7)}
 ```

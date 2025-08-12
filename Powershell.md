@@ -98,9 +98,18 @@ Get-Process -Name "Notepad"
 Get-Process -Id 1234
 Get-Process | Sort-Object CPU -Descending
 ```
+
 Check process meta data including paths and arguments
 
+
+Get version information for process
+```powershell
+Get-Process -Name pwsh -FileVersionInfo
+```
+
 EXTRA: get all services which are running and start automatically
+
+
 
 
 

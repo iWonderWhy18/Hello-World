@@ -366,6 +366,15 @@ Foreach ($host in $range){    #will iterate through range
 
 
 
+Script Idea's
+
+Get-Process
+
+output a file for any process that has a higher pid then 4
+or
+for each process display it in .txt file
+or 
+check which files/programs are in the run and runonce registry keys
 
 
 

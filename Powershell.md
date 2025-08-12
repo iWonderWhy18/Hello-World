@@ -376,31 +376,100 @@ for each process display it in .txt file
 or 
 check which files/programs are in the run and runonce registry keys
 
+Scripting Concepts
+- Variables: $name="john"
+- Arrays: $items = @("apple", "pear", "banana")
+- Loops: foreach, for, while
+- Conditionals: if, else, elseif
+
+
+## Python script for getting items out of run and runonce keys and displays in .txt file
+
+```powershell
+$location = $location1, $location2, $location3, $location4, $location5, $location6, $location7, $location8
+
+$location1 = "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+$location2 = "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
+$location3 = "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run"
+$location4 = "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
+$location5 = "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Run"
+$location6 = "HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\RunOnce"
+$location7 = "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Run"
+$location8 = "HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\RunOnce"
+
+
+Foreach ($file in $location) {       
+	$document = "$location$file"
+	Write-Output "checking $document..."
+}
+
+```
+
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
+
+```powershell
+# Define registry locations to check
+$locations = @(
+    "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
+    "HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce",
+    "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run",
+    "HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce"
+)
+
+# Get the path to the current user's desktop
+$desktopPath = [Environment]::GetFolderPath("Desktop")
+$outputFile = Join-Path $desktopPath "RunRegistryEntries.txt"
+
+# Create or clear the output file
+Set-Content -Path $outputFile -Value "Run and RunOnce Registry Entries:`n"
+
+# Loop through each registry location
+foreach ($location in $locations) {
+    Write-Output "Checking $location..."
+
+    # Try to get the registry key
+    try {
+        $key = Get-Item -Path "Registry::$location" -ErrorAction Stop
+        $values = Get-ItemProperty -Path "Registry::$location"
+
+        # If there are values, process them
+        foreach ($property in $values.PSObject.Properties) {
+            if ($property.Name -ne "PSPath" -and $property.Name -ne "PSParentPath" -and $property.Name -ne "PSChildName") {
+                # Get creation time of the registry key
+                $creationTime = (Get-Item -Path "Registry::$location").LastWriteTime
+
+                # Format output
+                $entry = "Location: $location`nValue Name: $($property.Name)`nValue Data: $($property.Value)`nLast Modified: $creationTime`n"
+                Add-Content -Path $outputFile -Value $entry
+                Add-Content -Path $outputFile -Value "-----------------------------`n"
+            }
+        }
+    } catch {
+        Write-Output "Failed to access $location or no data found."
+    }
+}
+
+Write-Output "Scan complete. Results saved to $outputFile"
+```
 
 
 
 
+## Python script for getting processes into .txt file
+
+Get-Process
+
+```powershell
+$process = Get-CimInstance Win32_Process | Select-Object Name, ProcessId, CommandLine
 
 
+```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Get-Process | Select-Object -Property ProcessName, Id, Path
+Get-CimInstance Win32_Process | Select-Object Name, ProcessId, CommandLine
 
 
 

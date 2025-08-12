@@ -152,7 +152,18 @@ Get-ScheduledTask
 ```
 
 
-Reg query 
+Reg query FIND OUT THIS
+
+
+
+Check a common registry startup location
+
+
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\RunOnce
+
+List Scheduled tasks
+
 
 
 

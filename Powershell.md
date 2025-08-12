@@ -255,6 +255,54 @@ Get-ChildItem -Path "C:\" -Recurse -ErrorAction SilentlyContinue -File | Where-O
 ## Remoting 
 
 
+```powershell
+Enter-PSSession -CompyterName REMOTEPC (Get-Credential)
+
+Invoke-Command -COmputerName REMOTEPC {Get-Process}
+
+Get-WMIObject -Class Win32_Process -ComputerName REMOTEPC
+
+Enable-PSRemote -Force
+```
+
+[Get-WmiObject (Microsoft.PowerShell.Management) - PowerShell | Microsoft Learn](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-wmiobject?view=powershell-5.1)
+
+
+## Scripting 
+
+Scripting Concepts
+- Variables: $name="john"
+- Arrays: $items = @("apple", "pear", "banana")
+- Loops: foreach, for, while
+- Conditionals: if, else, elseif
+- Functions: Invoke-Pingsweep {xyz}
+
+#### Step 1: Variables
+
+```powershell
+$subnet = "192.168.1." #Variable 
+$range = 1..10 #Array
+```
+
+#### Step 2: Variables and Loops (Foreach)
+
+```powershell
+Foreach ($host in $range) {       #$host is being defined here
+	$ip = "$subnet$host"
+	Write-Output "Pinging $ip..."
+}
+```
+
+
+#### Step 3: Conditionals (if/ else)
+
+```powershell
+if (Test-Connection -ComputerName $ip -count 1 -Quiet) {
+	Write-Output "$ip is online"
+} else {
+	write-output "$ip is unreachable"
+	}
+```
 
 
 

@@ -123,6 +123,9 @@ Netstat bnao
 ```
 
 ```powershell
+netstat -bnao
+```
+```powershell
 Netstat -a
 ```
 

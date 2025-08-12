@@ -172,73 +172,49 @@ Get-ChildItem -Path C:\Users\fcu1\ -Recurse | Where-Object Name -eq "bad.txt"
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+List all the windows logs
+```powershell
+Get-WinEvent -listlog *
+```
+
+What logs might you check to see if PowerShell was run in the past hour?
+```powershell
+Get-WinEvent -listlog *powershell*
+```
+
+```powershell
+ Get-WinEvent -log "Windows PowerShell"
+```
+
+```powershell
+Get-WinEvent -logname "Microsoft-Windows-PowerShell/Operational"
+```
+
+Format
+```powershell
+Get-WinEvent -LogName Security -MaxEvents 50 | Format-Table TimeCreated, Id, Message -AutoSize
+```
+
+What command in PowerShell might you run to check that?
+
+
+Adding Specifics to add to commands
+This command is showing the most used items chewing up the CPU
+```powershell
+Get-Process | Sort-Object CPU -Descending | Select-Object -First 1 -Property ProcessName, ID, CPU
+```
+
+Find only established connections
+```powershell
+Get-NetTCPConnection | Where-Object { $_.State -eq "Established" } | Select-Object LocalAddress, LocalPort, RemoteAddress, RemotePort, State
+```
+
+Find connections to a specific remote address
+```powershell
+Get-NetTCPConnection -RemoteAddress "192.168.1.50"
+```
+
+Find connections on a specific local port
+```powershell
+Get-NetTCPConnection -LocalPort 80
+```

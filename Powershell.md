@@ -110,8 +110,21 @@ Get-Process -Name pwsh -FileVersionInfo
 EXTRA: get all services which are running and start automatically
 
 
+Network traffic they're seeing is coming from the host you're looking at???
 
+Retrieve information about current TCP connections on a system. This cmdlet is part of the `NetTCPIP` module.
+```powershell
+Get-NetTcpConnection
+```
 
+Netstat Help
+```powershell
+Netstat bnao
+```
+
+```powershell
+Netstat -a
+```
 
 
 

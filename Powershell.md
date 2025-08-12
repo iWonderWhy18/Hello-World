@@ -8,6 +8,9 @@ Processes with paths location
 ```powershell
 Get-Process | Select-Object -Property ProcessName, Id, Path
 ```
+```powershell
+Get-CimInstance Win32_Process | Select-Object Name, ProcessId, CommandLine
+```
 
 ```powershell
 Get-Variable

@@ -8,6 +8,7 @@ Do not read any of the artefacts source code (its a powershell activity not an i
 (eg. do not use "cat file.xx")
 
 
+
  1. Identify the suspicious "flag" on the system and provide the command used ( hint, it isn't "flag.txt" but it might be close to that)
 
 ANSWER: 
@@ -32,13 +33,47 @@ Mode                LastWriteTime         Length Name
 
 2. Discover active suspicious processes and provide the command used to find it
 
-python              1324 C:\Users\hcmadmin\AppData\Local\Programs\Python\Python313\python.exe
-pythonw             4708 C:\Users\hcmadmin\AppData\Local\Programs\Python\Python313\pythonw.exe
+```powershell
+Get-Process | Select-Object -Property ProcessName, Id, Path
+```
+python - 1324 - C:\Users\hcmadmin\AppData\Local\Programs\Python\Python313\python.exe
+pythonw - 4708 - C:\Users\hcmadmin\AppData\Local\Programs\Python\Python313\pythonw.exe
+
+```powershell
+Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\Currentversion\Run
+```
+run4eva               : pythonw.exe "C:\Users\hcmadmin\AppData\Local\Temp\run4eva.py"
+
+```powershell
+Get-CimInstance Win32_Process | Select-Object Name, ProcessId, CommandLine
+```
+
 
 3. Identify how persistence is maintained and which commands you used to find it
 
+```powershell
+Get-ItemProperty -Path HKCU:\Software\Microsoft\Windows\Currentversion\Run
+```
+run4eva               : pythonw.exe "C:\Users\hcmadmin\AppData\Local\Temp\run4eva.py"
+
+
+```powershell
+Get-ScheduleTask
+```
+TaskPath                                       TaskName                          State
+--------                                       --------                          -----
+\                                              FlagDropper                       Ready
+
+
+
+
 
 4. Correlate and collect all related artifacts (submit to instructor for eradication)
+
+Nuke both users
+
+
+
 
 
 5. Clean the system and provide the commands used to remove the files. 
@@ -134,7 +169,7 @@ explorer    3972       5.5
 
 
 
-run4eva               : pythonw.exe "C:\Users\hcmadmin\AppData\Local\Temp\run4eva.py"
+
 
 
 

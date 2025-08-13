@@ -485,8 +485,7 @@ Get-CimInstance Win32_Process | Select-Object Name, ProcessId, CommandLine
 ## Kill A Process
 
 ```powershell
-#stop process
-#User inputs a process
+#NOTWORKING
 
 Get-Process
 
@@ -511,6 +510,45 @@ function ProcessKiller
     }
 
 ```
+
+```powershell
+function ProcessKiller{
+
+	# Prompt the user to enter the name of the process they want to kill
+	$processtokill = Read-Host "What process would you like to kill?"
+
+	# Get all running processes and filter those whose name matches the input
+	$processes = Get-Process |
+		Where-Object { $_.Name -like "*$processtokill*" }
+
+	# If matching processes are found, attempt to stop each one
+	if ($processes) {
+		foreach ($proc in $processes) {
+			# Forcefully stop the process using its Process ID
+			Stop-Process -Id $proc.Id -Force
+
+			# Output confirmation that the process has been stopped
+			Write-Output "Process has been stopped '$($proc.Name)'"
+		}
+	} else {
+		# If no matching process is found, notify the user and exit
+		Write-Output "No matching process found for '$processtokill'"
+		return
+	}
+
+	# Display details of the processes that were matched
+	foreach ($proc in $processes) {
+		[pscustomobject]@{
+			Name = $proc.Name              # Name of the process
+			PID  = $proc.Id                # Process ID
+			Path = $proc.Path              # Path may be null in Get-Process
+		}
+	}
+}
+```
+
+
+
 
 
 

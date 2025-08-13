@@ -495,12 +495,53 @@ function ProcessKiller
 	$processtokill = Read-Host "What process would you like to kill?"
 
 	$processes = Get-WmiObject Win32_Process
-	
+		Where-Object { $_.Name -like "*processtokill*"}
+		
+	if (Stop-Process $processes "ProcessName" -Force) {}
+		Write-Output "Process has been stopped '$processtokill'"
+		return
+	}
+
+	  foreach ($proc in $pocesses) {
+        [pscustomobject]@{
+            Name = $proc.Name
+            PID  = $proc.ProcessId
+            Path = $proc.ExecutablePath
+        }
+    }
 
 ```
 
 
 
+### Indy Script
+
+```powershell
+function ProcessChecker {
+
+
+    $checked = Read-Host "What process would you like to check?"
+
+    $BadProcesses = Get-WmiObject Win32_Process |
+        Where-Object { $_.Name -like "*$checked*" }
+
+    if (-not $BadProcesses) {
+        Write-Output "No processes matching '$checked'"
+        return
+    }
+
+    foreach ($proc in $BadProcesses) {
+        [pscustomobject]@{
+            Name = $proc.Name
+            PID  = $proc.ProcessId
+            Path = $proc.ExecutablePath
+        }
+    }
+
+
+}
+
+```
 
 
 

@@ -463,8 +463,18 @@ Write-Output "Scan complete. Results saved to $outputFile"
 Get-Process
 
 ```powershell
-$process = Get-CimInstance Win32_Process | Select-Object Name, ProcessId, CommandLine
+Get-CimInstance Win32_Process | Select-Object Name, ProcessId, CommandLine > test.txt
 
+$processes = Get-CimInstance Win32_Process | Select-Object Name, ProcessId, CommandLine >
+
+Foreach ($process in $processes) {      
+	$ip = "$subnet$host"
+	Write-Output "Checking $ip..."
+
+
+Foreach ($host in $range) {       #$host is being defined here
+	$ip = "$subnet$host"
+	Write-Output "Pinging $ip..."
 
 ```
 
@@ -472,6 +482,22 @@ Get-Process | Select-Object -Property ProcessName, Id, Path
 Get-CimInstance Win32_Process | Select-Object Name, ProcessId, CommandLine
 
 
+## Kill A Process
+
+```powershell
+#stop process
+#User inputs a process
+
+Get-Process
+
+function ProcessKiller
+
+	$processtokill = Read-Host "What process would you like to kill?"
+
+	$processes = Get-WmiObject Win32_Process
+	
+
+```
 
 
 

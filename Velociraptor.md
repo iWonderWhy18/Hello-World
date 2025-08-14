@@ -103,3 +103,90 @@ To **gather event logs** using Velociraptor, you first **navigate to the Hunt
 
 ![[Pasted image 20250814113738.png]]
 
+
+
+# Introduction to Velociraptor: Ep.3 – VQL
+
+
+## What is VQL?
+
+Velociraptor has many powerful features and applications – as you probably know from the series so far. But you need to learn how these are succinctly **packaged up and made reusable**, most of which is done using **Velociraptor Query Language (VQL)** made into artifacts. VQL is a query language like SQL, used to query structured data sets and discover key information such as **evidence of execution**, where certain parts of **metadata may be inconsistent**, and **systems that make up specific environments**.
+
+Linux.Sys.Services
+
+Type: client
+
+Parse services from `systemctl`
+
+```
+LET services = SELECT Stdout FROM execve(argv=['systemctl', 'list-units', '--type=service'])
+
+LET all_services = SELECT grok(grok="%{NOTSPACE:Unit}%{SPACE}%{NOTSPACE:Load}%{SPACE}%{NOTSPACE:Active}%{SPACE}%{NOTSPACE:Sub}%{SPACE}%{GREEDYDATA:Description}", data=Line) AS Parsed
+FROM parse_lines(accessor="data", filename=services.Stdout)
+        
+SELECT * FROM foreach(row=all_services, column="Parsed") WHERE Unit =~ ".service"
+```
+
+The fundamental structure is similar to a simplified SQL sentence structure. You `SELECT` the item to search, `FROM` the source you wish to search, `WHERE` your defined (optional) conditions are met. This structure makes up all VQL queries. None of the more complex features exist in other query languages, such as JOIN functions, as the language isn't designed to achieve these results purely programmatically. This potential shortcoming is instead made up of plugins, allowing you to gather and serialize data then use VQL to interact with it programmatically, keeping the outputs consistent and easy to parse.
+
+## Querying using VQL
+
+VQL queries are applied lazily. This means that the execution of the evaluation stages of the query are stopped until the very last moment that they can be. Lazy evaluation in VQL stops Velociraptor from wasting resources doing a larger query when much of the source data can be filtered out from the query by conditions you've added to it. For example:
+
+```
+## This will return all the OS' from the data the info plugin gathers
+SELECT OS FROM info()
+
+## This will gather all the same data, but will filter out any data that does not have OS matching windows
+SELECT OS FROM info() WHERE OS = "Windows"
+```
+
+#### Subqueries
+
+VQL can also contain subqueries – queries within queries. This allows you to manage the complexity of queries by limiting them to specific parts of the evaluation and add in more conditional execution. For example, you can use the `if()` plugin to evaluate whether a condition is met and then execute a subquery.
+
+```
+LET history_files = SELECT * from foreach(
+	row={
+		SELECT Uid, Name AS User,
+			expand(path=Directory) AS HomeDirectory
+		FROM Artifact.Windows.Sys.Users()
+		WHERE Name =~ userRegex
+	},
+	query={
+		SELECT User, OSPath, Mtime
+		FROM glob(globs=historyGlobs, root=HomeDirectory)
+	})
+```
+
+Understanding the lifecycle of a query can help you diagnose any logic errors that might occur during execution. Luckily, this process is simple:
+
+1. Plugins are called, and any supplied arguments are passed to them to generate the information for processing the rest of the VQL query.
+2. Once the full set of information is received, it's contained in a lazy evaluator to be further processed.
+3. The created evaluation is then evaluated against filter conditions to eliminate non-applicable data from the results.
+4. The query then returns the data that makes it through the filter to you!
+
+## Programmatic VQL
+
+Like any programming language, VQL contains at least two more expected features: **operators** and **control structures**. Control structures have already been mentioned, where you can use conditional `if` statements to decide on whether a subquery should run, but you can also expect more to use while generating a query:
+
+- `foreach()` – allows you to iterate over individual parts of data (called rows) and apply another query to it.
+- `switch()` – allows you to iterate over a list of subqueries in the order they're defined until one returns any data. This then stops evaluation except for the one that's returned data.
+- `chain()` – similar to `switch()`, except all queries are evaluated. This is then all combined into one output rather than three.
+
+VQL also contains the operators you'd expect to find in a programming language, including the arithmetic `+ - * /` operators, comparison operators `= != < > <= >=`, the contains operator `in`, the regex operator `=~`, and the associative operator `.`.
+
+## Output complexity
+
+As queries become larger and larger, they become more difficult and, by definition, more complex. Luckily, you can manage the output of queries in a way that cuts down complexity by using the different features mentioned above. However, managing the data during and after a query can be the core of why such complexity exists. VQL contains a syntax called `GROUP BY`, where you can decide how the individual pieces of data are grouped and managed during a query and any subqueries evaluating it by organizing it into bins depending on the condition you've set. For example, if you group by OS, you'll receive the number of each unique bin created and, therefore, the number of each unique OS identifier. You can aggregate this data even further by using built-in aggregate functions, such as: `count()` to add the total number of rows in each bin, `sum()` to add up values, and `enumerate()` to add all the values into an array.
+
+## Applying VQL
+
+VQL is the core of the artifacts functionality in Velociraptor. Each artifact is essentially a YAML file containing a VQL query to execute and reuse as many times as they'd like. This is how VQL is applied into Velociraptor by default – by being the driving function that allows you to search and return any piece of information or data that an OS can possibly recover and return. You can then evaluate that across entire environments quickly and simply. The complexity is written once, becomes repeatable, and supports your investigations across your systems.
+
+But once the information is retrievable and the artifacts are created, Velociraptor can visualize it using the **notebooks** feature. Here you can add in artifacts and create VQL queries on the fly, creating complex and deep-diving discoveries into systems and visualizing them into clear, functioning output for both reporting and further investigation.
+
+![[Pasted image 20250815083847.png]]
+
+
+

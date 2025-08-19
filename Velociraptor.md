@@ -190,3 +190,183 @@ But once the information is retrievable and the artifacts are created, Velocirap
 
 
 
+# Introduction to Velociraptor: Ep.4 – Searching
+
+## Velociraptor plugins
+
+The previous episode in this series looked at the VQL syntax and how it improves the usability of Velociraptor. But without a strong set of plugins, VQL can't be used to its full potential. The vast amount of VQL plugins and features that are tailored toward effective DFIR investigations and detections are what make Velociraptor so powerful!
+
+This episode introduces you to a Velociraptor plugin for performing the most common operations within a DFIR investigation: **searching for files**.
+
+## Searching filenames
+
+Finding files quickly is one of the most performed tasks during a DFIR investigation. But one of the most commonly asked questions is…
+
+Using Velociraptor, you can search for the filename, file content, file size, and other criteria of the file on any system connected to Velociraptor.
+
+Velociraptor's `glob()` plugin allows you to search for files using a glob expression. This is the most popular method for searching by filename. The glob expression allows Velociraptor to scan the filesystem for matches using wildcards. The following list represents the syntax of the glob expressions:
+
+`*` – A wildcard match (e.g. `*.exe` matches all files ending with `.exe`)
+
+`{}` – Used for searching for multiple alternatives (for example `*.{exe,zip,dll}`)
+
+`**` – Recursive wildcards (for example `C:\Users\**\*.exe`)
+
+#### Conducting a hunt
+
+The first Velociraptor artifact for filename searches on a Windows system is **Windows.Search.FileFinder**. Note that Linux and Mac operating systems have their own specific Velociraptor artifacts used to search for files within their own filesystems.
+
+To use the **Windows.Search.FileFinder** artifact, analysts must first create a **hunt** within Velociraptor. To do this, click the hamburger icon in the top left corner of the Velociraptor GUI, and navigate to **Hunt Manager**.
+
+![[Pasted image 20250815085628.png]]
+
+Clicking the plus icon will open up the **New Hunt** configuration wizard. On this page, you can enter details such as the description of the hunt, select what operating systems to target, and define when the hunt will expire, among other properties. Because you're searching for files within your Windows fleet, it's recommended to set the **Include Condition** to **Operating System** and set **Windows** as the **Operating System Included**.
+
+![[Pasted image 20250815085642.png]]
+
+After setting those properties and writing a brief description, everything else can be left as default.
+
+Navigate to the next tab, **Select Artifacts.** From here, you can search for **Windows.Search.FileFinder**.
+
+The next step is to **Configure Parameters** for each of the selected artifacts used in the hunt. Clicking the **spanner icon** will bring up the configuration page. Within the **SearchFilesGlobTable** parameter, you'll notice that an example search location has already been provided. It's common practice to delete this entry so that you're able to replace it with a more specific location tailored to your hunt. Do this by clicking the **trash can** icon.
+
+![[Pasted image 20250815085656.png]]
+
+The **SearchFilesGlob** parameter is where you tell Velociraptor what to hunt for using glob expressions.
+
+Say you want to search for all text files within a specific user's home directory. Taking what you've previously learned, you could craft a glob expression to search this location and provide a wildcard syntax to search for all text files, such as with the following glob expression:
+
+`C:\Users\IMLUser\Documents\*.txt`
+
+**All other properties can be left as default.** Finally, click the Launch tab to save and create the hunt.
+
+You've just set up your first hunt in Velociraptor!
+
+Next, you need to execute the hunt. By default, all hunts are created in a paused state. Highlight the new hunt entry you just created, and click the **Play** button to kick it off.
+
+![[Pasted image 20250815085708.png]]
+
+Depending on the size of the fleet, executing a hunt should only take a couple of seconds. Because Velociraptor is built on the VQL language, this drastically speeds up the process of mass querying multiple machines at once. When a hunt is complete, the total number of **Finished Clients** must match the number of **Total Scheduled** clients.
+
+![[Pasted image 20250815085718.png]]
+
+Click on the **Notebook** tab to view the results of the hunt. If the hunt discovered any file matching the glob expression criteria, they'll be displayed here, along with other information such as size, creation time, permissions, etc.
+
+![[Pasted image 20250815085731.png]]
+
+
+# Introduction to Velociraptor: Ep.5 – NTFS
+
+## Analyzing the NTFS using Velociraptor
+
+Approaching the Windows file system is simple. Launch the OS, open the file manager, and you've made it. You can explore, search, and customize to your heart's content. However, dealing with the file system as a forensic artifact containing other artifacts requires you to manage the approach differently. Careful interaction using technical tooling allows you to do this by controlling the metadata impacted by interaction and ensuring every stage of the forensics process is sound and meets the needs of the investigation.
+
+To learn more about digital forensics investigations, take a look at the following lab:
+
+### NTFS primer
+
+Windows has three main options for filesystems that the OS runs on:
+
+- File Allocation Table (FAT)
+- High-Performance File System (HPFS)
+- New Technology File System (NTFS)
+
+Each of these options has certain features that make them useful for different needs. But the default filesystem used for Windows is NTFS.
+
+NTFS allows the system to be reliable and straightforward by not creating hardware dependencies or things unique to that operating system.
+
+### Master File Table
+
+You can track every file using the Master File Table (MFT), which keeps a record of each file on the filesystem, including itself. Data stored includes the file name, size, timestamps, permissions, and metadata on the content and file.
+
+To learn more about the MFT, take a look at the following lab:
+
+The MFT stores files that are on the filesystem, but also deleted files may be removed from the MFT by the filesystem. Deleted files become marked as “**free**” and the space becomes free to use by other files.
+
+### Volume Shadow Copy
+
+The system also has a feature called Volume Shadow Copy Service (VSS). VSS backs up every file into a **shadow copy,** where they can be rapidly recovered and brought back into functionality in the case of system failures or accidental loss. While this doesn't provide an appropriate enterprise backup, it can be helpful for on-the-fly work where changes can be rapid, such as automatically updating an application. Forensic investigators can recover files deleted during an incident by discovering the files either partially or wholly within the VSS and retrieving the file's contents for review. For more information on VSS, take a look at the following lab:
+
+## Discovering files using Velociraptor
+
+Knowing each of the filesystem's nuances can allow you to gather evidence quickly and effectively.
+
+Velociraptor makes this easy by providing the necessary features to parse different sections of the NTFS at speed.
+
+![[Pasted image 20250815092419.png]]
+
+## NTFS accessor
+
+Velociraptor allows you to parse the raw NTFS from a filesystem with an **NTFS accessor**.
+
+An **accessor** in Velociraptor is simply a driver used to **interact with the system directly** rather than through more abstracted APIs. Direct access allows you to have fewer potential points of contact with other parts of the system the agent is running on. This adds a **layer of protection** against other possible forms of interception. It then parses it into both a human and machine-readable format that makes it easier to perform forensic analysis remotely. Alternative Data Streams (ADS) can also be seen and used for forensic processes from the accessor, showing any other data streams potentially attached to MFT entries and hidden files from this.
+
+By using the accessor alongside the **Windows.Search.FileFinder** artifact, you can find any file matching your requirements. However, discovering files this way is very resource-intensive.
+
+### `parse_mft() + windows.ntfs.mft`
+
+Reading the MFT file is much less intensive, while still providing valuable forensic data. You can use Velociraptor's `parse_mft()` plugin that allows you to access to the MFT parser built into the Velociraptor and build VQL queries using it. This means that rather than downloading files and using many more resources, you can get a summary of each entry in the MFT file, including its timestamp, name, and MFT ID.
+
+This is the first and quickest step you can take to discover files on the system beyond using the interactive filesystem in the admin GUI. However, when you need to learn more information than the `parse_mft()` plugin provides, you may want to use the `parse_ntfs()` function, which takes the ID of the MFT entry and provides all the information concerning the entry, including the file it refers to, files it may have referred to, and any ADS and associated information.
+
+### Accessing MFT as an artifact
+
+A few of the options above can overcomplicate evidence gathering where you may not wish to interact with or write VQL. The **Windows.NTFS.MFT** artifact parses the MFT file and returns the records depending on which switches you've used and edited. This can be used to recover a deleted file by taking the ID of the file you wish to recover from the MFT and providing it to the **Windows.NTFS.Recover** artifact to return the file if it can be recovered.
+
+For more information on Windows.NTFS.MFT, [click here](https://docs.velociraptor.app/artifact_references/pages/windows.ntfs.mft/).
+
+For more information on Windows.NTFS.Recover, [click here.](https://docs.velociraptor.app/artifact_references/pages/windows.ntfs.recover/)
+
+## Timeline analysis
+
+All this information combined can be overwhelming and hard to keep track of, especially when building the story of what happened on the system during the incident being investigated. Evidence is usually visualized with **timelines** to quickly understand what happened and where. Using `ORDER BY` with the timestamp field (alongside any other sub-queries that define the evidence you wish to see) generates a timeline of when events occurred. Evidence was generated to report the story of the incident properly and associate evidence across events.
+
+
+# Introduction to Velociraptor: Ep.6 – Triage
+
+## Triage
+
+In digital forensic incident response (DFIR), triaging refers to the process of swiftly gathering data about a system to determine whether or not it's relevant to a forensic investigation. Although many people associate triage with just file collection, in Velociraptor, there's actually no distinction between file collection and other non-volatile artifact collections. Triaging is just the act of capturing machine state or any other volatile data. This includes information on running processes, active network connections, etc.
+
+## Collecting files
+
+For the purpose of recording machine states at a particular moment in time, it's critical to effectively and swiftly gather and store evidence. One of the most commonly used Velociraptor artifacts for doing so is **Windows.KapeFiles.Targets**, which is based on the open-source tool [KapeFiles](https://github.com/EricZimmerman/KapeFiles). The Velociraptor KapeFiles artifact can gather information on a large number of files in a relatively short amount of time. It collects data on files based on the file targets listed, but won't perform any analysis on them.
+
+To set up and configure a collection, you must first select a machine from the list of hosts in Velociraptor. Once you've selected a host, the **Collection** button will become available.
+
+![[Pasted image 20250815093603.png]]
+
+Next, click on the **Plus** icon to open the **New Collection** wizard. From here, you can search for the **Windows.KapeFiles.Targets** artifact:
+
+![[Pasted image 20250815093615.png]]
+
+Once selected, head to the **Configure Parameters** tab and click on the **Wrench** icon to see what sort of files can be collected. KapeFiles is extremely powerful because it has a fine-grained list of files that can be collected by default. Such collections include information on:
+
+- Antivirus logs
+- Registry hives
+- MFT records
+- Discord information
+- Browser cache
+- Event logs
+- Microsoft Office cache
+- And much, much more!
+
+To conduct a collection, make sure the **check box** is ticked next to the list of files that need to be reviewed as part of the investigation requirements. For the purpose of this demonstration, select the **_BasicCollection** option:
+
+![[Pasted image 20250815093626.png]]
+
+The next step is to specify the resources available for the collection. The KapeFiles artifact can recover a vast amount of file data from the endpoints, but it may take a while to complete depending on how much information needs to be captured. The resource control of the collection must consequently be updated to accommodate this:
+
+![[Pasted image 20250815093636.png]]
+
+Once the correct amount of resources has been assigned (for this lab, these can be left as default), you can launch the collection. Keep an eye on the **State** variable within the **Artifact Collection** tab.
+
+![[Pasted image 20250815093649.png]]
+Once the state variable returns **FINISHED**, the collection has been completed.
+
+### Results
+
+To view the results of the collection, navigate to the **Results** tab. From here, you can see all of the files (that are stored on the system at the time the collection was conducted) that match the file format criteria assigned within the collection parameters.
+
+![[Pasted image 20250815093701.png]]
+

@@ -1,5 +1,7 @@
 
 [Arkime Demo - Help](https://demo.arkime.com/help?date=-1&exp=asn.dst#sessions)
+[Release v3.5.0 - Obon Release · Yamato-Security/hayabusa](https://github.com/Yamato-Security/hayabusa/releases/tag/v3.5.0)
+[65sch00l/arkime_questions_with_queries.txt at main · G1useppe/65sch00l](https://github.com/G1useppe/65sch00l/blob/main/arkime_questions_with_queries.txt)
 
 
 1. Find all sessions originating from the 192.168.1.0/24 subnet accessing external web servers on port 80.

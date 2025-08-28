@@ -13,3 +13,37 @@ Index = Eventlogs sourcetype=WinEventLog:Security
 
 Index = host sourcetype=velociraptor
 
+
+Filtering and fields
+
+Example:
+
+```python
+index = Eventlogs sourcetype=WinEventLog:Security
+EventCode=4625 user="*jane*"
+```
+
+```python
+index = Eventlogs sourcetype=WinEventLog:Security
+EventCode=4625 user="*jane*" AND user="*smith*"
+```
+
+```python
+index = Eventlogs sourcetype=WinEventLog:Security
+EventCode=4625 OR EventCode=4624 AND user="*jane*" OR user="*smith*"
+```
+
+Format the output
+
+- stats
+- table
+- top/rare
+- dedup
+- eval
+- rename
+
+```python
+index = Eventlogs sourcetype=WinEventLog:Security
+EventCode=4625 user="*jane*" | table user | dedup user
+```
+

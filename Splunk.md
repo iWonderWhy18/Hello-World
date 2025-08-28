@@ -83,6 +83,8 @@ index="velociraptor" source="Velociraptor_ETW_ProcessCreation_Flat.json"
 ```
 ![[Pasted image 20250828134534.png]]
 
+powershell.exe 1004
+schetasks.exe 1005
 
     
     - What user account was responsible for this?

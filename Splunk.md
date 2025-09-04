@@ -157,3 +157,13 @@ Do you find any command lines or scripts that seem to be attempting to hide thei
 Which artifacts or fields could help you confirm if the file transfer was successful?
     
  Based on the timeline of events, which action would you have been able to detect first if you had the right detection in place? ( no wrong answers ) 
+
+
+
+
+
+
+---
+
+### Using Fields - Lab Work
+

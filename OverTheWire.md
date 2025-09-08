@@ -163,5 +163,66 @@ HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
 Username: bandit6
 Password: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
 
+```powershell
+ssh bandit5@bandit.labs.overthewire.org -p 2220
+```
+
+---
+
+# Bandit Level 6 → Level 7
+
+## Level Goal
+
+The password for the next level is stored **somewhere on the server** and has all of the following properties:
+
+- owned by user bandit7
+- owned by group bandit6
+- 33 bytes in size
+
+## Commands you may need to solve this level
+
+[ls](https://manpages.ubuntu.com/manpages/noble/man1/ls.1.html) , [cd](https://manpages.ubuntu.com/manpages/noble/man1/cd.1posix.html) , [cat](https://manpages.ubuntu.com/manpages/noble/man1/cat.1.html) , [file](https://manpages.ubuntu.com/manpages/noble/man1/file.1.html) , [du](https://manpages.ubuntu.com/manpages/noble/man1/du.1.html) , [find](https://manpages.ubuntu.com/manpages/noble/man1/find.1.html) , [grep](https://manpages.ubuntu.com/manpages/noble/man1/grep.1.html)
+
+```python
+find / -type f -user bandit7 -group bandit6
+
+Result:
+/var/lib/dpkg/info/bandit7.password
+```
+
+
+Cat the file result below
+morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+
+Username: bandit7
+Password: morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+
+```powershell
+ssh bandit6@bandit.labs.overthewire.org -p 2220
+```
+
+---
+# Bandit Level 7 → Level 8
+
+## Level Goal
+
+The password for the next level is stored in the file **data.txt** next to the word **millionth**
+
+## Commands you may need to solve this level
+
+[man](https://manpages.ubuntu.com/manpages/noble/man1/man.1.html), grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd
+
+```powershell
+ssh bandit7@bandit.labs.overthewire.org -p 2220
+morbNTDkSW6jIlUc0ymOdMaLnOlFVAaj
+```
+
+```python
+bandit7@bandit:~$ grep 'millionth' data.txt
+millionth   dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+```
+
+password: dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+
 ---
 

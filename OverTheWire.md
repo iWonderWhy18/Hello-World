@@ -225,4 +225,46 @@ millionth   dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
 password: dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
 
 ---
+# Bandit Level 8 → Level 9
+
+## Level Goal
+
+The password for the next level is stored in the file **data.txt** and is the only line of text that occurs only once
+
+## Commands you may need to solve this level
+
+grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd
+
+## Helpful Reading Material
+
+- [Piping and Redirection](https://ryanstutorials.net/linuxtutorial/piping.php)
+
+```python
+bandit8@bandit:~$ sort data.txt | uniq -u
+4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
+```
+
+---
+# Bandit Level 9 → Level 10
+
+## Level Goal
+
+The password for the next level is stored in the file **data.txt** in one of the few human-readable strings, preceded by several ‘=’ characters.
+
+## Commands you may need to solve this level
+
+grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd
+
+
+```python
+grep -a '==' data.txt
+```
+
+```
+ssh bandit9@bandit.labs.overthewire.org -p 2220
+
+Password: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey 
+```
+
+---
 

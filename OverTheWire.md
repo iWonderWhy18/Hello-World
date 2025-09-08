@@ -151,3 +151,17 @@ The password for the next level is stored in a file somewhere under the **inher
 
 [ls](https://manpages.ubuntu.com/manpages/noble/man1/ls.1.html) , [cd](https://manpages.ubuntu.com/manpages/noble/man1/cd.1posix.html) , [cat](https://manpages.ubuntu.com/manpages/noble/man1/cat.1.html) , [file](https://manpages.ubuntu.com/manpages/noble/man1/file.1.html) , [du](https://manpages.ubuntu.com/manpages/noble/man1/du.1.html) , [find](https://manpages.ubuntu.com/manpages/noble/man1/find.1.html)
 
+```python
+bandit5@bandit:~/inhere/maybehere07$ cat -- .file2
+HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+```
+
+```python
+HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+```
+
+Username: bandit6
+Password: HWasnPhtq9AVKe0dmk45nxy20cvUa6EG
+
+---
+

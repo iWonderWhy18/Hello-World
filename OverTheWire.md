@@ -287,10 +287,9 @@ grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd
 
 - [Base64 on Wikipedia](https://en.wikipedia.org/wiki/Base64)
 
-
-
 ```python
 ssh bandit10@bandit.labs.overthewire.org -p 2220
 
 FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
 ```
+

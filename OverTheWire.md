@@ -241,6 +241,9 @@ grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd
 
 ```python
 bandit8@bandit:~$ sort data.txt | uniq -u
+
+dfwvzFQi4mU0wfNbFOe9RoWskMLg7eEc
+
 4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
 ```
 
@@ -263,8 +266,19 @@ grep -a '==' data.txt
 ```
 ssh bandit9@bandit.labs.overthewire.org -p 2220
 
-Password: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey 
+Password: FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
 ```
+
+4CKMh1JI91bUIZZPXDqGanal4xvAg0JM
 
 ---
 
+
+
+
+
+```python
+ssh bandit10@bandit.labs.overthewire.org -p 2220
+
+FGUW5ilLVJrxX9kMYMmlN4MgbpfMiqey
+```

@@ -324,3 +324,78 @@ ssh bandit11@bandit.labs.overthewire.org -p 2220
 dtR173fZKb0RRsDFSGsg2RWnpNVj3qRr
 ```
 
+```python
+tr 'A-Za-z' 'N-ZA-Mn-za-m' < data.txt
+
+ITuyVUOup3A3o3WxVTymVTE0HwR3Z2MnF2VjHyWmERMGE3AaZyWKoaOBIzbmpIWlPt==
+```
+
+🔍 Breakdown of the Command
+
+tr 'A-Za-z' 'N-ZA-Mn-za-m' < data.txt
+
+- `'A-Za-z'`: This defines the **input character set** — all uppercase (`A-Z`) and lowercase (`a-z`) letters.
+- `'N-ZA-Mn-za-m'`: This defines the **output character set**, which is the input set **rotated by 13 positions**.
+
+🔁 How the Rotation Works
+
+🔡 Uppercase Letters:
+
+- Input: `A B C D E F G H I J K L M N O P Q R S T U V W X Y Z`
+- Output: `N O P Q R S T U V W X Y Z A B C D E F G H I J K L M`
+
+So:
+
+- `A` → `N`
+- `B` → `O`
+- ...
+- `M` → `Z`
+- `N` → `A`
+- ...
+- `Z` → `M`
+
+🔠 Lowercase Letters:
+
+- Input: `a b c d e f g h i j k l m n o p q r s t u v w x y z`
+- Output: `n o p q r s t u v w x y z a b c d e f g h i j k l m`
+
+So:
+
+- `a` → `n`
+- `b` → `o`
+- ...
+- `m` → `z`
+- `n` → `a`
+- ...
+- `z` → `m`
+
+🧠 Why It’s 13 Positions
+
+The alphabet has 26 letters. ROT13 splits it in half:
+
+- First 13 letters shift forward by 13
+- Last 13 wrap around to the beginning
+
+This makes ROT13 its own inverse — applying it twice returns the original text.
+
+---
+# Bandit Level 12 → Level 13
+
+## Level Goal
+
+The password for the next level is stored in the file **data.txt**, which is a hexdump of a file that has been repeatedly compressed. For this level it may be useful to create a directory under /tmp in which you can work. Use mkdir with a hard to guess directory name. Or better, use the command “mktemp -d”. Then copy the datafile using cp, and rename it using mv (read the manpages!)
+
+## Commands you may need to solve this level
+
+grep, sort, uniq, strings, base64, tr, tar, gzip, bzip2, xxd, mkdir, cp, mv, file
+
+## Helpful Reading Material
+
+- [Hex dump on Wikipedia](https://en.wikipedia.org/wiki/Hex_dump)
+
+
+```python
+ssh bandit12@bandit.labs.overthewire.org -p 2220
+
+ITuyVUOup3A3o3WxVTymVTE0HwR3Z2MnF2VjHyWmERMGE3AaZyWKoaOBIzbmpIWlPt==
+```
